@@ -1,0 +1,47 @@
+
+
+
+<!-- NAV -->
+<nav class="nav-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 logo">
+                <a href="{% url 'view_page' %}" >E Commerce</a>
+            </div>
+            <div class="col-md-8">
+                <div class="navigation">
+                    <a href="/" class="navigation__link">Shop</a>
+                    <a href="#" class="navigation__link">Blog</a>
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+            <div class="col-md-1">
+                <div class="cart">
+                    <a href="{% url 'order-summary' %}" class="cart__button">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="cart__number">{{ cartItems }}</div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="navigation">
+                    <a href="{% url 'account_logout' %}" class="navigation__link">Logout</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-md-1">
+                <div class="navigation">
+                    <a href="{% url 'account_login' %}" class="navigation__link">Login</a>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="navigation">
+                    <a href="{% url 'account_signup' %}" class="navigation__link">Signup</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
