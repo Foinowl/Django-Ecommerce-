@@ -29,9 +29,20 @@ class UserProfile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
+    image = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username
+
+    def save(self):
+        super().save()
+
+        img = Image.open(self.image.path)
+
+        if img.height > 65 or img.width > 65:
+            output_size = (65, 65)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
 
 class Item(models.Model):
