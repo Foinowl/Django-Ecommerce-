@@ -12,7 +12,6 @@
                             </div>
                             <div class="ml-2">
                                 <div class="h5 m-0">
-{#                                    href="{% url 'user-posts' post.author.username %}"#}
                                     <a class="mr-2 navigation__link" href="">
                                         {{ post.author }}
                                     </a>
@@ -25,8 +24,7 @@
                             </div>
                             <div class="ml-5">
                                     <h2 class="blog__title">
-{#                                        {% url 'post-detail' post.id %}#}
-                                    <a class="article-title navigation__link" href="">
+                                    <a class="article-title navigation__link" href="{{ post.get_absolute_url }}">
                                         {{ post.title }}
                                       </a>
                                     </h2>
@@ -37,7 +35,7 @@
                     </div>
                 </div>
                 <div class="card-body ">
-                        <a class="desc__blog navigation__link" href="">
+                        <a class="desc__blog navigation__link" href="{{ post.get_absolute_url }}">
                             {{ post.content|truncatechars:35 }}
                         </a>
                 </div>

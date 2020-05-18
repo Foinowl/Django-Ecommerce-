@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404
-from django.shortcuts import render
+from .utils import ObjectCreateMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.conf import settings
-from allauth.utils import get_user_model
 from django.contrib.auth.models import User
 from django.views.generic import (
+    View,
     ListView,
     DetailView,
+    UpdateView,
+    DeleteView
 )
 from .models import Post
+from .forms import PostForm
 
 
 class PostListView(ListView):
@@ -34,21 +36,33 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
 
-# class PostCreateView(LoginRequiredMixin,ObjectCreateMixin,View):
-#     model_form = PostForm
-#     template = 'blog/post_form.html'
-#
-#
-# class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-#     model = Post
-#     fields = ['title', 'slug', 'content', 'tags']
-#
-#     def form_valid(self, form):
-#         form.instance.author = self.request.user
-#         return super().form_valid(form)
-#
-#     def test_func(self):
-#         post = self.get_object()
-#         if self.request.user == post.author:
-#             return True
-#         return False
+
+class PostCreateView(LoginRequiredMixin, ObjectCreateMixin, View):
+    model_form = PostForm
+    template = 'blog/post_form.html'
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['title', 'slug', 'content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
