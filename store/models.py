@@ -4,6 +4,8 @@ from django.shortcuts import reverse
 from django.db import models
 from django_countries.fields import CountryField
 from PIL import Image
+import numpy as np
+
 
 
 CAT_CHOICES = (
@@ -29,7 +31,7 @@ class UserProfile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
-    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
     def __str__(self):
         return self.user.username
@@ -39,8 +41,8 @@ class UserProfile(models.Model):
 
         img = Image.open(self.image.path)
 
-        if img.height > 65 or img.width > 65:
-            output_size = (65, 65)
+        if img.height != 165 and img.width != 165:
+            output_size = (165, 165)
             img.thumbnail(output_size)
             img.save(self.image.path)
 
@@ -83,6 +85,30 @@ class Item(models.Model):
         return reverse("remove-from-cart", kwargs={
             'slug': self.slug
         })
+
+
+class FeturedItem(models.Model):
+    title = models.CharField(max_length=100)
+    price = models.FloatField()
+    category = models.CharField(choices=CAT_CHOICES, max_length=10)
+    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    slug = models.SlugField()
+    description = models.TextField()
+    image = models.ImageField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    def save(self):
+        super().save()
+
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
+
 
 
 class OrderItem(models.Model):

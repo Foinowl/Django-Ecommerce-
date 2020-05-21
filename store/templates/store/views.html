@@ -58,7 +58,6 @@
 		</div><!-- container -->
 	</div><!-- Section -->
 
-
 		<!-- ADV BLOCKS -->
 	<div class="adv-wrapper adv-wrapper--bg-1">
 		<div class="container adv-content-center">
@@ -77,55 +76,20 @@
 			<div class="subtitle">Coleu ampow awaf</div>
 
 			<div class="row">
+                {% for item in FeturedItem %}
 				<div class="col-md-3">
 					<div class="card">
-						<div class="card__image">
-							<img src="img/1.jpg">
+                        <div class="card__image" id="image">
+							<img src="{{ item.image.url }}">
 						</div>
-						<div class="card__title">Cotton Polo Shirt</div>
+						<div class="card__title">{{ item.title }}</div>
 						<div class="card__price">
-							<span>$100</span>
-							$95
+							${{ item.price }}
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
-					<div class="card">
-						<div class="card__image">
-							<img src="img/1.jpg">
-						</div>
-						<div class="card__title">Cotton Polo Shirt</div>
-						<div class="card__price">
-							<span>$100</span>
-							95
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="card">
-						<div class="card__image">
-							<img src="img/1.jpg">
-						</div>
-						<div class="card__title">Cotton Polo Shirt</div>
-						<div class="card__price">
-							<span>$100</span>
-							95
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="card">
-						<div class="card__image">
-							<img src="img/1.jpg">
-						</div>
-						<div class="card__title">Cotton Polo Shirt</div>
-						<div class="card__price">
-							<span>$100</span>
-							95
-						</div>
-					</div>
-				</div>
-			<a href="#" class="button-outline">Brows all items</a>
+                {% endfor %}
+			<a href="{% url 'fetured' %}" class="button-outline">Brows all items</a>
 			</div>
 		</div><!-- container -->
 	</div><!-- Section -->
@@ -155,57 +119,23 @@
 
 		<div class="row">
 			<!-- Blog posts -->
-			<div class="col-md-6 blog">
-				<div class="row">
-					<div class="col-md-4">
-						<img src="img/blog/1.png" alt="Blog post">
-					</div>
-					<div class="col-md-8">
-						<div class="blog__title">Lorem ipsum dolor sit amet, consectetur</div>
-						<div class="blog__desc">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-						<a href="#" class="blog__read-more">Read more</a>
-					</div>
-				</div>
-			</div><!-- "col-md-6 blog"> -->
-			<div class="col-md-6 blog">
-				<div class="row">
-					<div class="col-md-4">
-						<img src="img/blog/2.png" alt="Blog post">
-					</div>
-					<div class="col-md-8">
-						<div class="blog__title">Lorem ipsum dolor sit amet, consectetur</div>
-						<div class="blog__desc">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-						<a href="#" class="blog__read-more">Read more</a>
-					</div>
-				</div>
-			</div><!-- "col-md-6 blog"> -->
-			<div class="col-md-6 blog">
-				<div class="row">
-					<div class="col-md-4">
-						<img src="img/blog/3.png" alt="Blog post">
-					</div>
-					<div class="col-md-8">
-						<div class="blog__title">Lorem ipsum dolor sit amet, consectetur</div>
-						<div class="blog__desc">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-						<a href="#" class="blog__read-more">Read more</a>
-					</div>
-				</div>
-			</div><!-- "col-md-6 blog"> -->
-			<div class="col-md-6 blog">
-				<div class="row">
-					<div class="col-md-4">
-						<img src="img/blog/4.png" alt="Blog post">
-					</div>
-					<div class="col-md-8">
-						<div class="blog__title">Lorem ipsum dolor sit amet, consectetur</div>
-						<div class="blog__desc">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-						<a href="#" class="blog__read-more">Read more</a>
-					</div>
-				</div>
-			</div><!-- "col-md-6 blog"> -->
+            {% for user in users %}
+                <div class="col-md-6 blog">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ user.userprofile.image.url }}" alt="Blog post">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="blog__title">{{ user.post_set.first.title }}</div>
+                            <div class="blog__desc">{{  user.post_set.first.content }}</div>
+                            <a href="{{ user.post_set.first.get_absolute_url }}" class="blog__read-more">Read more</a>
+                        </div>
+                    </div>
+                </div><!-- "col-md-6 blog"> -->
+            {% endfor %}
 		</div>
 
-		<a href="#" class="button-outline mt-60 mb-100">read all post</a>
+		<a href="blog/" class="button-outline mt-60 mb-100">read all post</a>
 
 
 		<h2 class="title">Join 100,000 members already collaborating</h2>

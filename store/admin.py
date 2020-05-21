@@ -54,6 +54,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Item)
+admin.site.register(FeturedItem)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)

@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
+from django.contrib.auth.models import User
 from django.forms import inlineformset_factory
 
 from .models import *
@@ -49,6 +50,8 @@ class ViewPage(ListView):
                 context[ 'cartItems' ] = 0
         else:
             context[ 'cartItems' ] = 0
+        context['users'] = User.objects.exclude(is_staff=True, is_superuser=True)[:4]
+        context['FeturedItem'] = FeturedItem.objects.all()[:4]
         return context
 
     def get_queryset(self):
@@ -370,6 +373,31 @@ class HomeView(ListView):
 
     def get_queryset(self):
         return ItemsFilter(self.request.GET, queryset=Item.objects.all()).qs
+
+
+class FeturedHomeView(ListView):
+    model = FeturedItem
+    paginate_by = 8
+    template_name = 'store/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FeturedHomeView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            order = Order.objects.filter(user=self.request.user, ordered=False)
+            print(order)
+            if order.exists():
+                context[ 'cartItems' ] = order[0].get_cart_items
+            else:
+                context[ 'cartItems' ] = 0
+
+        else:
+            context[ 'cartItems' ] = 0
+        myFilter = ItemsFilter(self.request.GET, FeturedItem.objects.all())
+        context['filter'] = myFilter
+        return context
+
+    def get_queryset(self):
+        return ItemsFilter(self.request.GET, queryset=FeturedItem.objects.all()).qs
 
 class ItemDetailView(DetailView):
     model = Item

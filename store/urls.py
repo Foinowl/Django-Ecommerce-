@@ -11,11 +11,13 @@ from .views import (CheckoutView,
                     RequestRefundView,
                     ContentDetailView,
                     SearchResultsView,
-                    ViewPage
+                    ViewPage,
+                    FeturedHomeView
                     )
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('fetured/', FeturedHomeView.as_view(), name='fetured'),
     path('view', ViewPage.as_view(), name='view_page'),
     path('results/', SearchResultsView.as_view(), name='search_results'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
